@@ -1,0 +1,52 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>BitCoin PrivateKey WIF Conversion</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-tab-group>
+      <mat-tab label='Private Key => WIF'>
+        <div class="tab-content" fxLayout="row" fxLayoutGap="32px" fxLayoutAlign="space-around end">
+          <mat-form-field>
+            <textarea matInput matTextareaAutosize type="text" placeholder="Private Key"
+                      [(ngModel)]="privateKey"></textarea>
+          </mat-form-field>
+          <mat-form-field>
+            <textarea matInput matTextareaAutosize type="text" placeholder="WIF" [(ngModel)]="wif"></textarea>
+          </mat-form-field>
+        </div>
+        <div fxLayoutAlign="center space-between">
+          <button mat-button (click)="generateKey()">Generate Private Key</button>
+          <button mat-button (click)="keyToWif()">Convert to WIF</button>
+        </div>
+      </mat-tab>
+      <mat-tab label='WIF => Private Key'>
+        <div class="tab-content" fxLayout="row" fxLayoutGap="32px" fxLayoutAlign="space-around end">
+          <mat-form-field>
+            <textarea matInput matTextareaAutosize type="text" placeholder="WIF" [(ngModel)]="wif"></textarea>
+          </mat-form-field>
+          <mat-form-field>
+            <textarea matInput matTextareaAutosize type="text" placeholder="Private Key"
+                      [(ngModel)]="privateKey"></textarea>
+          </mat-form-field>
+        </div>
+        <div fxLayoutAlign="center space-between">
+          <button mat-button (click)="generateWif()">Generate WIF</button>
+          <button mat-button (click)="wifToKey()">Convert to Private key</button>
+        </div>
+      </mat-tab>
+      <mat-tab label='WIF Checksum'>
+        <div class="tab-content" fxLayout="row" fxLayoutGap="32px" fxLayoutAlign="space-around center">
+          <mat-form-field>
+            <textarea matInput matTextareaAutosize type="text" placeholder="WIF" [(ngModel)]="wif"></textarea>
+          </mat-form-field>
+          <mat-icon *ngIf="wifValidation" class="pass">check</mat-icon>
+          <mat-icon *ngIf="!wifValidation" class="fail">close</mat-icon>
+        </div>
+        <div fxLayoutAlign="center space-between">
+          <button mat-button (click)="generateWif()">Generate WIF</button>
+          <button mat-button (click)="wifCheck()">Check WIF</button>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>
