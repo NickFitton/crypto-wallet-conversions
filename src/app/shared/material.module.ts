@@ -34,9 +34,3 @@ import {
 })
 export class MaterialModule {
 }
-
-git init
-git add .
-git commit -m "Setup project, add first conversions"
-git remote add origin git@personal.github.com:NickFitton/crypto-wallet-conversions.git
-git push -u origin master
