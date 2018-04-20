@@ -1,7 +1,7 @@
 declare var require: any;
 import { Component } from '@angular/core';
-import * as EC from 'elliptic/lib/elliptic/ec';
 import { StringUtil } from '../shared/utils/string.util';
+import { ECPair } from 'bitcoinjs-lib';
 
 const BASE58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
 const bs58 = require('base-x')(BASE58);
@@ -12,53 +12,30 @@ const bs58 = require('base-x')(BASE58);
   styleUrls: ['./btc.component.css']
 })
 export class BtcComponent {
-  private keyPair: EC.KeyPair;
-  private ec: EC;
+  private keyPair: ECPair;
 
-  private publicKey: string;
+  public publicKey: string;
   public privateKey: string;
+  public address: string;
   public wif: string;
   public wifValidation: boolean;
+  public miniPrivateKey: string;
 
   constructor() {
-    this.privateKey = '';
-    this.ec = new EC('secp256k1');
+    this.miniPrivateKey = StringUtil.generateValidMiniPrivateKey();
+    this.privateKey = StringUtil.miniToPrivateKey(this.miniPrivateKey);
+    this.wif = BtcComponent.keyToWif(this.privateKey);
+    this.keyPair = ECPair.fromWIF(this.wif);
+    this.publicKey = this.keyPair.getPublicKeyBuffer().toString('hex');
+    this.address = this.keyPair.getAddress();
   }
 
-  generateKey() {
-    this.keyPair = this.ec.genKeyPair();
-
-    this.publicKey = this.keyPair.getPublic();
-    this.privateKey = this.keyPair.getPrivate('hex');
-  }
-
-  generateWif() {
-    this.generateKey();
-    this.keyToWif();
-    this.privateKey = '';
-  }
-
-  keyToWif() {
-    const extendedKey = '80' + this.privateKey;
+  static keyToWif(privateKey: string): string {
+    const extendedKey = '80' + privateKey;
     const hashedKey = StringUtil.hashHexString(StringUtil.hashHexString(extendedKey));
     const checksum = hashedKey.substr(0, 8);
     const extendedKeyChecksum = extendedKey + checksum;
     const temp = StringUtil.parseByteString(extendedKeyChecksum);
-    this.wif = bs58.encode(temp);
+    return bs58.encode(temp);
   }
-
-  wifToKey() {
-    const byteArray = bs58.decode(this.wif).toString('hex');
-    this.privateKey = byteArray.substr(2, byteArray.length - 10);
-  }
-
-  wifCheck() {
-    const byteArray = bs58.decode(this.wif).toString('hex');
-    const originalChecksum = byteArray.substr(byteArray.length - 8, 8);
-    const noChecksum = byteArray.substr(0, byteArray.length - 8);
-    const keyHash = StringUtil.hashHexString(StringUtil.hashHexString(noChecksum));
-    const calculatedChecksum = keyHash.substr(0, 8);
-    this.wifValidation = originalChecksum === calculatedChecksum;
-  }
-
 }
