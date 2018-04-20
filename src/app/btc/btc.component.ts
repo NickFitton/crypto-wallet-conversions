@@ -22,12 +22,7 @@ export class BtcComponent {
   public miniPrivateKey: string;
 
   constructor() {
-    this.miniPrivateKey = StringUtil.generateValidMiniPrivateKey();
-    this.privateKey = StringUtil.miniToPrivateKey(this.miniPrivateKey);
-    this.wif = BtcComponent.keyToWif(this.privateKey);
-    this.keyPair = ECPair.fromWIF(this.wif);
-    this.publicKey = this.keyPair.getPublicKeyBuffer().toString('hex');
-    this.address = this.keyPair.getAddress();
+    this.generateNewSet();
   }
 
   static keyToWif(privateKey: string): string {
@@ -37,5 +32,14 @@ export class BtcComponent {
     const extendedKeyChecksum = extendedKey + checksum;
     const temp = StringUtil.parseByteString(extendedKeyChecksum);
     return bs58.encode(temp);
+  }
+
+  generateNewSet() {
+    this.miniPrivateKey = StringUtil.generateValidMiniPrivateKey();
+    this.privateKey = StringUtil.miniToPrivateKey(this.miniPrivateKey);
+    this.wif = BtcComponent.keyToWif(this.privateKey);
+    this.keyPair = ECPair.fromWIF(this.wif);
+    this.publicKey = this.keyPair.getPublicKeyBuffer().toString('hex');
+    this.address = this.keyPair.getAddress();
   }
 }
