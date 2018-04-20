@@ -1,5 +1,5 @@
 declare var require: any;
-const BASE58 = '23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+const BASE58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
 const hash = require('hash.js');
 const bs58 = require('base-x')(BASE58);
 
@@ -28,6 +28,15 @@ export class StringUtil {
       }
     }
     console.error('No success in ' + attempts + ' attempts.');
+  }
+
+  static keyToWalletImportFormat(privateKey: string): string {
+    const extendedKey = '80' + privateKey;
+    const hashedKey = StringUtil.hashHexString(StringUtil.hashHexString(extendedKey));
+    const checksum = hashedKey.substr(0, 8);
+    const extendedKeyChecksum = extendedKey + checksum;
+    const temp = StringUtil.parseByteString(extendedKeyChecksum);
+    return bs58.encode(temp);
   }
 
   static parseByteString(str: string) {
