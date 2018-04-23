@@ -2,14 +2,25 @@ mat-form-field {
   width: 50%;
 }
 
-.tab-content {
-  padding: 16px;
+mat-card {
+  padding: 0;
 }
 
-.pass {
-  color: green;
+mat-card-header {
+  padding: 24px 24px 0 24px;
 }
 
-.fail {
-  color: red;
+mat-card-actions {
+  margin: 16px 0 16px 0;
+  padding: 0 24px 12px 12px !important;
+}
+
+mat-card-content {
+  padding: 24px;
+  margin: 0;
+  background: #F8F8F8;
+}
+
+.monospace {
+  font-family: 'PT Mono', monospace;
 }

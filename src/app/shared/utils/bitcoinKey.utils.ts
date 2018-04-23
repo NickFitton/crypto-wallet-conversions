@@ -3,7 +3,7 @@ const BASE58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
 const hash = require('hash.js');
 const bs58 = require('base-x')(BASE58);
 
-export class StringUtil {
+export class BitcoinKeyUtils {
 
   static getBase58Char(): string {
     const position = Math.floor(Math.random() * BASE58.length);
@@ -13,7 +13,7 @@ export class StringUtil {
   static generateMiniPrivateKey(): string {
     let miniPrivateKey = '';
     for (let i = 0; i < 30; i++) {
-      miniPrivateKey = miniPrivateKey + StringUtil.getBase58Char();
+      miniPrivateKey = miniPrivateKey + BitcoinKeyUtils.getBase58Char();
     }
     return miniPrivateKey;
   }
@@ -22,8 +22,8 @@ export class StringUtil {
     let numAttempts = 0;
     while (numAttempts < attempts) {
       numAttempts++;
-      const miniPrivateKey = StringUtil.generateMiniPrivateKey();
-      if (StringUtil.hashString(miniPrivateKey + '?')[0] === 0) {
+      const miniPrivateKey = BitcoinKeyUtils.generateMiniPrivateKey();
+      if (BitcoinKeyUtils.hashString(miniPrivateKey + '?')[0] === 0) {
         return miniPrivateKey;
       }
     }
@@ -32,10 +32,10 @@ export class StringUtil {
 
   static keyToWalletImportFormat(privateKey: string): string {
     const extendedKey = '80' + privateKey;
-    const hashedKey = StringUtil.hashHexString(StringUtil.hashHexString(extendedKey));
+    const hashedKey = BitcoinKeyUtils.hashHexString(BitcoinKeyUtils.hashHexString(extendedKey));
     const checksum = hashedKey.substr(0, 8);
     const extendedKeyChecksum = extendedKey + checksum;
-    const temp = StringUtil.parseByteString(extendedKeyChecksum);
+    const temp = BitcoinKeyUtils.parseByteString(extendedKeyChecksum);
     return bs58.encode(temp);
   }
 
@@ -58,6 +58,6 @@ export class StringUtil {
   }
 
   static miniToPrivateKey(miniPrivateKey: string): string {
-    return StringUtil.hashHexString(miniPrivateKey);
+    return BitcoinKeyUtils.hashHexString(miniPrivateKey);
   }
 }

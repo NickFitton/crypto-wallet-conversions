@@ -3,14 +3,30 @@
     <mat-card-title>BitCoin PrivateKey WIF Conversion</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <h3>Mini Private Key</h3>
-    <span>{{miniPrivateKey}}</span>
-    <h3>Private Key</h3>
-    <span>{{privateKey}}</span>
-    <h3>Public Key</h3>
-    <span>{{publicKey}}</span>
-    <h3>Address</h3>
-    <span>{{address}}</span>
+    <div fxLayout="column" fxLayoutGap="16px">
+      <div fxLayout="row wrap" fxLayoutGap="16px" fxLayoutAlign="space-around center">
+        <div>
+          <h3>Mini Private Key</h3>
+          <span class="monospace">{{miniPrivateKey}}</span>
+        </div>
+        <div>
+          <h3>Private Key</h3>
+          <span class="monospace">{{privateKey}}</span>
+        </div>
+        <div>
+          <h3>WIF</h3>
+          <span class="monospace">{{wif}}</span>
+        </div>
+        <div>
+          <h3>Address</h3>
+          <span class="monospace">{{address}}</span>
+        </div>
+        <div>
+          <h3>Public Key</h3>
+          <span class="monospace">{{publicKey}}</span>
+        </div>
+      </div>
+    </div>
   </mat-card-content>
   <mat-card-actions>
     <button mat-button (click)="generateNewSet()">Generate new credentials</button>
